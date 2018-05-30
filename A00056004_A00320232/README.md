@@ -141,9 +141,16 @@ Aquí se puede apreciar la finalización exitosa del proceso de configuración d
 ![](images/lxd_bridge12.png)
 
 
+
+## Opcional
+#### Preguntas ramdom
+-¿Al reiniciar la máquina virtual en que estado quedan los contenedores?  
+A apagar el host se envía a todos los contenedores una señal de apagado a la que tienen 30 segundos para responder haciendo un apagado limpio del contenedor. Después de eso, si el contenedor sigue funcionando, será terminado forzadamente por LXD. Al arrancar, todos los contenedores que estaban funcionando en el momento en que se apagó el sistema se volverán a arrancar.  
+
 ## Bibliografía
 
 -https://www.howtogeek.com/175159/an-introduction-to-the-z-file-system-zfs-for-linux/
 -https://docs.oracle.com/cd/E24842_01/html/820-2314/zfsover-2.html#scrolltoc
 -https://wiki.illumos.org/download/attachments/1146951/zfs_last.pdf
 -https://es.wikipedia.org/wiki/ZFS_(sistema_de_archivos)#Espacios_de_almacenamiento_(Storage_pools)
+-https://discuss.linuxcontainers.org/t/host-os-shutdown-restart-graceful-shutdown-restart-of-lxd-containers/391
