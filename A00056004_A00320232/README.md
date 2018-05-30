@@ -105,39 +105,39 @@ Siguiendo con la instalación, se configura LXD para su uso con el comando:
 ```console
 sudo lxd ini
 ```
-Este comando se encarga de las configuraciones iniciales para el manejo de contenedores tales como la creación del pool storage, ZFS pool y el tamaño del loop device.
+Este comando se encarga de las configuraciones iniciales para el manejo de contenedores tales como la creación del pool storage, ZFS pool y el tamaño del loop device.  
 ![](images/lxd_conf.png)
 
-Una vez realizados estos pasos llegaremos a la configuración bridge de LXD, para esto se utilizan los valores predeterminados.
+Una vez realizados estos pasos llegaremos a la configuración bridge de LXD, para esto se utilizan los valores predeterminados.  
 ![](images/lxd_bridge.png)
 
-Se utiliza el nombre "lxdbr0" para la interfaz bridge de LXD
+Se utiliza el nombre "lxdbr0" para la interfaz bridge de LXD.  
 ![](images/lxd_bridge2.png)
 
-Se configura la subnet mediante IPv4
+Se configura la subnet mediante IPv4.  
 ![](images/lxd_bridge3.png)
 
-Una red aleatoria fue seleccionada automáticamente
+Una red aleatoria fue seleccionada automáticamente.  
 ![](images/lxd_bridge4.png)
 
-Se coloca la dirección IPv4 de la interfaz
+Se coloca la dirección IPv4 de la interfaz.  
 ![](images/lxd_bridge5.png)
 
-Se coloca la máscara de la subred
+Se coloca la máscara de la subred.  
 ![](images/lxd_bridge6.png)
 
-Se configura la dirección inicial y final que el DHCP se encargará de manejar
+Se configura la dirección inicial y final que el DHCP se encargará de manejar.  
 ![](images/lxd_bridge7.png)
 
 ![](images/lxd_bridge8.png)
 
-Se configura el máximo de direcciones asignados por el DHCP
+Se configura el máximo de direcciones asignados por el DHCP.  
 ![](images/lxd_bridge9.png)
 
-Por último se selecciona hacer NAT a todo el tráfico IPv4 de la interfaz
+Por último se selecciona hacer NAT a todo el tráfico IPv4 de la interfaz.  
 ![](images/lxd_bridge10.png)
 
-Aquí se puede apreciar la finalización exitosa del proceso de configuración de LXD
+Aquí se puede apreciar la finalización exitosa del proceso de configuración de LXD.  
 ![](images/lxd_bridge12.png)
 
 
