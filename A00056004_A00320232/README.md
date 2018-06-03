@@ -249,20 +249,7 @@ lxc config set webServer1 limits.cpu 1
 ![](images/webserver2_cpu.png)
 
 ## Creación de contenedor con servicio de balanceo de carga
-Se requiere la creción de un contenedor, el cual tendrá como fin ser un balanceador de carga, designado a dirigir el tráfico entranto hacia alguno de los dos servidores web previamente creados. Para iniciar con la creación, utilizamos la siguiente sintáxis de comandos.
-
-```console
-lxc launch <imagen del so del contenedor> <nombre del contenedor>
-```
-Así que procedemos a ejecutar este comando dos veces, indicando en cada uno de ellas la misma imagen SO (Ubuntu 16.04 Xenial) y definiendo el siguiente estándar para los nombres.
-
-- Web Server 1 -> webServer1
-- Web Server 2 -> webServer2
-
-```console
-lxc launch ubuntu:16.04 webServer1
-```
-
+Se requiere la creción de un contenedor, el cual tendrá como fin ser un balanceador de carga, designado a dirigir el tráfico entranto hacia alguno de los dos servidores web previamente creados. Se define el siguiente estándar de nombres y se procede a ejecutar el comando de creación de un contenedor con LXC.
 
 - Balanceador de carga -> balanceadorCarga
 
@@ -270,10 +257,88 @@ lxc launch ubuntu:16.04 webServer1
 lxc launch ubuntu:16.04 balanceadorCarga
 ```
 
+Una vez ejecutado el anterior comando, procedemos a verificar si el contenedor fue creado exitosamente, listándolo con el siguiente comando.
+
+```console
+lxc list
+```  
+![](images/lxc_list2.png)
+
+#### Configuración
+Para la configuración del balanceador de carga se utilizan los mismos comandos iniciales previamente usados para aprovisionar los contenedores con Nginx
+
+```console
+lxc exec balanceadorCarga -- sudo --login --user ubuntu
+```
+Procedemos a instalar los paquetes necesarios por Nginx.  
+```console
+sudo apt-get install nginx
+```
+
+Una vez instalados los paquetes, nos dirigimos a /etc/nginx/conf.d/, directorio en el cual se se configurará el balanceador, creamos un archivo con nombre 'load-balancer.conf' y pegamos lo siguiente.
+```console
+cd /etc/nginx/conf.d/
+sudo nano load-balancer.conf
+```
+
+```
+upstream backend {
+   server 10.2.36.93;
+   server 10.2.36.34;  
+}
+server {
+   location / {
+      proxy_pass http://backend;
+   }
+}
+```
+
+![](images/balanceador_conf.png)
+
+En el apartado 'upstream backend' se colocan las direcciones IP de cada uno de los dos servidores web previamente creados, esto para que los conozca y pueda redirigir el tráfico a ellos.  
+
+Una vez modificado este archivo, se procede a eliminar la carpeta 'default' de /etc/nginx/sites-enabled/ para que el balanceador no de como respuesta una página HTML sino que proceda a realizar el balanceo de la carga y redirección hacia alguno de los dos servidores web. 
+```console
+sudo rm -rf /etc/nginx/sites-enabled/default
+```
+
+Se reinicia el servicio de Nginx.
+```console
+sudo service nginx restart
+```
+
+Se valida que el servicio para conexion remota y el balanceador esten activos.
+```console
+systemctl list-unit-files --state=enabled | grep lxd
+```  
+![](images/balanceador_conf2.png)
+
+**lxd-containers.service** -> Servicio de balanceador.  
+**lxd.socket** -> Servicio para conexión remota.
+
+## Contenedores creados y sus direcciones IP
+Para listar los contenedores con sus respectivas IP se utiliza el siguiente comando.
+```console
+lxc list
+```
+![](images/lxc_list3.png)
+
+## Pruebas funcionamiento balanceador
+#### Pruebas curl
+Para probar el funcionamiento del balanceador se utiliza el comando curl hacia la dirección IP del balanceador de carga.
+
+```console
+curl http://10.2.36.234
+```
+![](images/balanceador_prueba.png)
+
+#### Pruebas de estrés
+
+
 ## Opcional
 #### Preguntas ramdom
 -¿Al reiniciar la máquina virtual en que estado quedan los contenedores?  
-A apagar el host se envía a todos los contenedores una señal de apagado a la que tienen 30 segundos para responder haciendo un apagado limpio del contenedor. Después de eso, si el contenedor sigue funcionando, será terminado forzadamente por LXD. Al arrancar, todos los contenedores que estaban funcionando en el momento en que se apagó el sistema se volverán a arrancar.  
+A apagar la máquina se envía a todos los contenedores una señal de apagado a la que tienen 30 segundos para responder haciendo un apagado limpio del contenedor. Después de eso, si el contenedor sigue funcionando, será terminado forzadamente por LXD. Al arrancar, todos los contenedores que estaban funcionando en el momento en que se apagó el sistema se volverán a arrancar.  
 
 ## Bibliografía
 
