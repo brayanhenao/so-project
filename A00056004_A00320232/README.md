@@ -265,7 +265,7 @@ lxc list
 ![](images/lxc_list2.png)
 
 #### Configuración
-Para la configuración del balanceador de carga se utilizan los mismos comandos iniciales previamente usados para aprovisionar los contenedores con Nginx
+Para la configuración del balanceador de carga se utilizan los mismos comandos iniciales previamente usados para aprovisionar los contenedores con Nginx.
 
 ```console
 lxc exec balanceadorCarga -- sudo --login --user ubuntu
