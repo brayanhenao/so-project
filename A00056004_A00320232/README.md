@@ -414,7 +414,15 @@ siege -c 500 -t 60s 10.2.36.234
 ![](images/cpu100_stress.png)  
 
 ## Reenvio de puertos
+Se configura el reenvio de puertos para que desde la máquina host se pueda acceder al servicio de balanceador de carga, esto mediante el reenvio desde el puerto 80 del guest hacia la IP del balanceador de carga provisto por LXC.  
 
+Para configurarlo se utiliza el siguiente comando, el cual agrega a las IPTABLES la regla anteriormente comentada.
+
+```console
+sudo iptables -t nat -A PREROUTING -p tcp -m conntrack --ctstate NEW --dport 80 -j DNAT --to-destination 10.2.36.234:80
+```
+![](images/acceso_host1.png)
+![](images/acceso_host2.png)
 
 ## Opcional
 #### Preguntas ramdom
