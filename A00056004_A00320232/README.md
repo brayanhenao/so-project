@@ -140,7 +140,135 @@ Por último se selecciona hacer NAT a todo el tráfico IPv4 de la interfaz.
 Aquí se puede apreciar la finalización exitosa del proceso de configuración de LXD.  
 ![](images/lxd_bridge12.png)
 
+## Creación de contenedores con servicio web
+Se requiere la creción de 2 contenedores los cuales tendrán un servicio web. Para iniciar con la creación, utilizamos la siguiente sintáxis de comandos.
 
+```console
+lxc launch <imagen del so del contenedor> <nombre del contenedor>
+```
+Así que procedemos a ejecutar este comando dos veces, indicando en cada uno de ellas la misma imagen SO (Ubuntu 16.04 Xenial) y definiendo el siguiente estándar para los nombres.
+
+- Web Server 1 -> webServer1
+- Web Server 2 -> webServer2
+
+```console
+lxc launch ubuntu:16.04 webServer1
+```
+
+```console
+lxc launch ubuntu:16.04 webServer2
+```
+
+Una vez ejecutados los anteriores comandos, procedemos a verificar si los contenedores fueron creados exitosamente, listándolos con el siguiente comando.
+
+```console
+lxc list
+```  
+![](images/lxc_list.png)  
+
+Cuando los contenedores se han creado, se procede a realizar las configuraciones necesarios para que ambos contenedores sean servidores web, esto se realiza aprovisionando el servidor web con [Nginx](https://www.nginx.com/).
+
+#### Configuración Web Server 1
+Se ejecuta el siguiente comando, el cual accede al contenedor webServer1 mediante la terminal, con permisos de sudo (administrador) para poder realizar cambios e instalación de paquetes y el usuario ubuntu (creado por defecto por lxc).
+
+```console
+lxc exec webServer1 -- sudo --login --user ubuntu
+```
+Procedemos a instalar los paquetes necesarios por Nginx.  
+```console
+sudo apt-get install nginx
+```
+
+Una vez instalados los paquetes, nos dirigimos a /var/www/html , directorio en el cual se aloja el servidor web, y editamos index.nginx-debian.html para poder identificar el servidor.  
+```console
+nano /var/www/html/index.nginx-debian.html
+```  
+![](images/webserver1_nginx.png)  
+
+![](images/webserver1_nginx2.png)  
+
+Para validar que el servicio web de Nginx esté activo, utilizamos el siguiente comando.  
+```console
+systemctl status nginx.service
+```
+![](images/webserver1_nginx3.png)
+
+
+También se puede utilizar curl a la dirección ip del contenedor webServer1 (desde la máquina host) para verificar la resputa (html) de la página principal del servidor.  
+
+```console
+curl http://10.2.36.93
+```  
+![](images/webserver1_nginx4.png)
+
+Para finalizar, se configura el contenedor para que utilice un procesador con el siguiente comando.
+
+```console
+lxc config set webServer1 limits.cpu 1
+```
+![](images/webserver1_cpu.png)
+
+#### Configuración Web Server 2
+Se utilizan los mismos comandos que en el servidor 1, solo se cambia el contenedor al servidor web 2.
+
+```console
+lxc exec webServer2 -- sudo --login --user ubuntu
+```
+Procedemos a instalar los paquetes necesarios por Nginx.  
+```console
+sudo apt-get install nginx
+```
+
+Una vez instalados los paquetes, nos dirigimos a /var/www/html , directorio en el cual se aloja el servidor web, y editamos index.nginx-debian.html para poder identificar el servidor.  
+```console
+sudo nano /var/www/html/index.nginx-debian.html
+```  
+![](images/webserver2_nginx.png)  
+
+![](images/webserver2_nginx2.png)  
+
+Para validar que el servicio web de Nginx esté activo, utilizamos el siguiente comando.  
+```console
+systemctl status nginx.service
+```
+![](images/webserver2_nginx3.png)
+
+
+También se puede utilizar curl a la dirección ip del contenedor webServer1 (desde la máquina host) para verificar la resputa (html) de la página principal del servidor.  
+
+```console
+curl http://10.2.36.34
+```  
+![](images/webserver2_nginx4.png)
+
+Para finalizar, se configura el contenedor para que utilice un procesador con el siguiente comando.
+
+```console
+lxc config set webServer1 limits.cpu 1
+```
+![](images/webserver2_cpu.png)
+
+## Creación de contenedor con servicio de balanceo de carga
+Se requiere la creción de un contenedor, el cual tendrá como fin ser un balanceador de carga, designado a dirigir el tráfico entranto hacia alguno de los dos servidores web previamente creados. Para iniciar con la creación, utilizamos la siguiente sintáxis de comandos.
+
+```console
+lxc launch <imagen del so del contenedor> <nombre del contenedor>
+```
+Así que procedemos a ejecutar este comando dos veces, indicando en cada uno de ellas la misma imagen SO (Ubuntu 16.04 Xenial) y definiendo el siguiente estándar para los nombres.
+
+- Web Server 1 -> webServer1
+- Web Server 2 -> webServer2
+
+```console
+lxc launch ubuntu:16.04 webServer1
+```
+
+
+- Balanceador de carga -> balanceadorCarga
+
+```console
+lxc launch ubuntu:16.04 balanceadorCarga
+```
 
 ## Opcional
 #### Preguntas ramdom
