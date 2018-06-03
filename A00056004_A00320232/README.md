@@ -324,7 +324,7 @@ lxc list
 ![](images/lxc_list3.png)
 
 ## Pruebas funcionamiento balanceador
-#### Pruebas curl
+### Pruebas curl
 Para probar el funcionamiento del balanceador se utiliza el comando curl hacia la dirección IP del balanceador de carga.
 
 ```console
@@ -332,7 +332,88 @@ curl http://10.2.36.234
 ```
 ![](images/balanceador_prueba.png)
 
-#### Pruebas de estrés
+### Pruebas de estrés
+Para las pruebas de estrés hacia nuestro balanceador de carga, se utiliza [siege](https://www.joedog.org/siege-home/). Se instala con el siguiente comando.
+```console
+sudo apt-get install siege
+```
+Una vez instalado siege, se procede a empezar con las diferentes pruebas de estrés con la siguiente sintaxis de comandos.  
+
+```console
+siege -c <usuarios concurrentes> -t <tiempo en el que correrá> <ip destino>
+```
+
+Para el caso de las pruebas de este proyecto, se utilizarán 500 usuarios concurrentes, en un lapso de tiempo de 60 segundos, hacia la dirección ip del balanceador de carga (10.2.36.234)
+
+```console
+siege -c 500 -t 60s 10.2.36.234
+```
+
+
+##### Servidores Web con 64Mb  
+Para las pruebas con 64MB de memoria, se limita la memoria a usar por los contenedores con los siguientes comandos.
+
+```console
+lxc config set webServer1 limits.memory 64MB
+```
+```console
+lxc config set webServer2 limits.memory 64MB
+```  
+
+Y se ejecutan las pruebas.
+```console
+siege -c 500 -t 60s 10.2.36.234
+```
+![](images/mem64_stress.png)  
+
+##### Servidores Web con 128Mb
+Para las pruebas con 128MB de memoria, se limita la memoria a usar por los contenedores con los siguientes comandos.
+
+```console
+lxc config set webServer1 limits.memory 128MB
+```
+```console
+lxc config set webServer2 limits.memory 128MB
+```  
+
+Y se ejecutan las pruebas.
+```console
+siege -c 500 -t 60s 10.2.36.234
+```
+![](images/mem128_stress.png)  
+
+##### Servidores Web con 50% CPU
+Para las pruebas con 50% de CPU, se limita la cantidad de CPU a usar por los contenedores con los siguientes comandos.
+```console
+lxc config set webServer1 limits.cpu.allowance 50%
+```
+```console
+lxc config set webServer2 limits.cpu.allowance 50%
+```  
+
+Y se ejecutan las pruebas.
+```console
+siege -c 500 -t 60s 10.2.36.234
+```
+![](images/cpu50_stress.png)  
+
+##### Servidores Web con 100% CPU
+Para las pruebas con 100% de CPU, se limita la cantidad de CPU a usar por los contenedores con los siguientes comandos.
+
+```console
+lxc config set webServer1 limits.cpu.allowance 100%
+```
+```console
+lxc config set webServer2 limits.cpu.allowance 100%
+```  
+
+Y se ejecutan las pruebas.
+```console
+siege -c 500 -t 60s 10.2.36.234
+```
+![](images/cpu100_stress.png)  
+
+## Reenvio de puertos
 
 
 ## Opcional
@@ -347,3 +428,5 @@ A apagar la máquina se envía a todos los contenedores una señal de apagado a 
 -https://wiki.illumos.org/download/attachments/1146951/zfs_last.pdf
 -https://es.wikipedia.org/wiki/ZFS_(sistema_de_archivos)#Espacios_de_almacenamiento_(Storage_pools)
 -https://discuss.linuxcontainers.org/t/host-os-shutdown-restart-graceful-shutdown-restart-of-lxd-containers/391
+-https://www.joedog.org/siege-home/
+
