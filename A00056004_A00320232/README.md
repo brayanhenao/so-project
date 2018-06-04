@@ -505,4 +505,5 @@ A apagar la máquina se envía a todos los contenedores una señal de apagado a 
 -https://es.wikipedia.org/wiki/ZFS_(sistema_de_archivos)#Espacios_de_almacenamiento_(Storage_pools)  
 -https://discuss.linuxcontainers.org/t/host-os-shutdown-restart-graceful-shutdown-restart-of-lxd-containers/391  
 -https://www.joedog.org/siege-home/  
+-http://pylxd.readthedocs.io/en/latest/containers.html  
 
