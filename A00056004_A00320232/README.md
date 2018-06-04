@@ -427,18 +427,60 @@ sudo iptables -t nat -A PREROUTING -p tcp -m conntrack --ctstate NEW --dport 80 
 ## Opcional
 
 ### Creación de contenedores por demanda
--Configure un adaptador nictype: macvlan
-Para realizar esta acción, se debe ingresar el siguiente comando.
+
+##### Configuración macvlan
+Para la creación de contenedores por demanda, primero se necesita configurar el adaptador de los contenedores, para esto se utiliza el siguiente comando, el cual copia las configuraciones actuales de red del perfil 'default'.
 
 ```console
-sudo ip link add macvlanip link lxdbr0 type macvlan type bridge
+lxc profile copy default proyecto
+```
+Una vez ejecutado el comando, verificamos que se haya creado el perfil.
+
+```console
+lxc profile list
+```
+![](images/lxc_profile.png)
+
+Cuando se haya creado, se procede a buscar cuál será el nictype y parent en la anterior configuración. El nictype será **macvlan** y el parent será el adaptador de red de la máquina host, el cual podemos ver ejecutando el siguiente comando.
+```console
+ip route show default 0.0.0.0/0
+```
+![](images/mcvlan1.png)
+
+Como podemos ver el adaptador de red de la máquina host es **enp0s8**, ahora procedemos a realizar las configuraciones en el perfil con los datos recolectados.
+
+```console
+lxc profile device set proyecto eth0 nictype macvlan
 ```
 
-Luego, con el comando ip a podemos comprobar que el adaptador fue creado.
+```console
+lxc profile device set proyecto eth0 parent enp0s8
+```
 
-![](images/macvlanCreate.png)
+Verificamos los cambios en el perfil **proyecto**.
+```console
+lxc profile show proyecto
+```
+![](images/mcvlan2.png)
 
-### Creación de aplicacion por consola
+Cuando los cambios en el perfil se hayan realizado, se procede a crear varios contenedores para probar que a cada uno de estos se les sea asignado una ip en la red local del host. Esto se realiza adicionando al comando de creación el parámetro '-p' el cual indica el perfil personalizo para la creación de ese contenedor.
+```console
+lxc launch ubuntu:16.04 prueba1 -p proyecto
+lxc launch ubuntu:16.04 prueba2 -p proyecto
+```
+![](images/mcvlan3.png)  
+
+Una vez crados los contenedores con el perfil 'proyecto' procedemos a verificar las IP que le fueron asignadas.
+```console
+lxc list
+```
+![](images/mcvlan4.png)
+
+Y efectivamente a ambos contenedores se les fue asignada una IP en la red local. Procedemos a verificar esto con un simple 'ping' entre los contenedores.
+![](images/mcvlan5.png)  
+
+
+##### Creación de aplicacion por consola
 
 Se creó un script en python que permite la creación y eliminación de contenedores mediante la consola.
 
