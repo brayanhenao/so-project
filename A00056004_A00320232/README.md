@@ -103,7 +103,7 @@ A diferencia de los sistemas de ficheros tradicionales que residen encima de un 
 
 Siguiendo con la instalación, se configura LXD para su uso con el comando:
 ```console
-sudo lxd ini
+sudo lxd init
 ```
 Este comando se encarga de las configuraciones iniciales para el manejo de contenedores tales como la creación del pool storage, ZFS pool y el tamaño del loop device.  
 ![](images/lxd_conf.png)
@@ -418,13 +418,26 @@ Se configura el reenvio de puertos para que desde la máquina host se pueda acce
 
 Para configurarlo se utiliza el siguiente comando, el cual agrega a las IPTABLES la regla anteriormente comentada.
 
-```console
+```consol
 sudo iptables -t nat -A PREROUTING -p tcp -m conntrack --ctstate NEW --dport 80 -j DNAT --to-destination 10.2.36.234:80
 ```
 ![](images/acceso_host1.png)
 ![](images/acceso_host2.png)
 
 ## Opcional
+
+### Creación de contenedores por demanda
+-Configure un adaptador nictype: macvlan
+Para realizar esta acción, se debe ingresar el siguiente comando.
+
+```consol
+sudo ip link add macvlanip link lxdbr0 type macvlan type bridge
+```
+
+Luego, con el comando ip a podemos comprobar que el adaptador fue creado.
+
+![](images/macvlanCreate.png)
+
 #### Preguntas ramdom
 -¿Al reiniciar la máquina virtual en que estado quedan los contenedores?  
 A apagar la máquina se envía a todos los contenedores una señal de apagado a la que tienen 30 segundos para responder haciendo un apagado limpio del contenedor. Después de eso, si el contenedor sigue funcionando, será terminado forzadamente por LXD. Al arrancar, todos los contenedores que estaban funcionando en el momento en que se apagó el sistema se volverán a arrancar.  
