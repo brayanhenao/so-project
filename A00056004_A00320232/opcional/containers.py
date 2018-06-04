@@ -22,7 +22,11 @@ if seleccion == '1':
 
 elif seleccion == '2':
     id = input("Nombre del contenedor que desea eliminar: ")
-    container = client.containers.get(id)
+    try:
+        container = client.containers.get(id)
+    except Exception:
+        print("No hay ningún contenedor con ese nombre.")
+        exit(1)
     print("Deteniendo contenedor ......")
     container.stop()
     time.sleep(5)
