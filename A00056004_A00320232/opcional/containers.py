@@ -5,7 +5,7 @@ seleccion = input('Digite 1 para crear un contenedor o 2 para eliminarlo: ')
 
 if seleccion == '1':
     name = input("Nombre para el contenedor: ")
-    imagen = input("Imagen del contenedor ")
+    imagen = input("Imagen del contenedor ( 'xenial/amd64', 'trusty/amd64', 'bionic/amd64', 'artful/amd64' :")
     config = {'name': name,
               'source': {'type': 'image', 'mode': 'pull', 'server': "https://cloud-images.ubuntu.com/daily",
                          "protocol": "simplestreams", 'alias': imagen}, 'profiles': ['default']}
