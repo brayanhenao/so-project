@@ -438,6 +438,31 @@ Luego, con el comando ip a podemos comprobar que el adaptador fue creado.
 
 ![](images/macvlanCreate.png)
 
+### Creación de aplicacion por consola
+
+Se creó un script en python que permite la creación y eliminación de contenedores.
+
+```python
+from pylxd import Client
+client = Client()
+seleccion = input('Digite 1 para crear un contenedor o 2 para eliminarlo: ')
+
+if seleccion==1:
+        name = raw_input("Nombre para el contenedor: ")
+        imagen = raw_input("Imagen del contenedor ")
+        config = {'name': name, 'source': {'type': 'image', 'mode': 'pull', 'server': "https://cloud-images.ubuntu.com/daily", "protocol": "simplestreams", 'alias': imagen}, 'profiles': ['profilename']}
+        container = client.containers.create(config, wait=True)
+        print('Contenedor creado exitosamente')
+elif seleccion==2:
+        id = raw_input("Nombre del contenedor que desea eliminar: ")
+        container = client.containers.get(id)
+        container.delete()
+        print("Contenedor borrado exitosamente")
+else:
+        print("Entrada invalida")
+```
+
+
 #### Preguntas ramdom
 -¿Al reiniciar la máquina virtual en que estado quedan los contenedores?  
 A apagar la máquina se envía a todos los contenedores una señal de apagado a la que tienen 30 segundos para responder haciendo un apagado limpio del contenedor. Después de eso, si el contenedor sigue funcionando, será terminado forzadamente por LXD. Al arrancar, todos los contenedores que estaban funcionando en el momento en que se apagó el sistema se volverán a arrancar.  
