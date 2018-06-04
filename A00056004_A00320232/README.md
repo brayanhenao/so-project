@@ -24,7 +24,7 @@ Para este proyecto se utilizará una máquina virtual con el sistema operativo U
 
 ![](images/Maquina_instal5.png)  
 
-3.  Se selecciona "Descargar actualizaciones al instalar Ubunto" esto permitirá tener el sistema actualizado en su última versión.  
+3.  Se selecciona "Descargar actualizaciones al instalar Ubuntu" esto permitirá tener el sistema actualizado en su última versión.  
 
 ![](images/Maquina_instal6.png)
 
@@ -32,7 +32,7 @@ Para este proyecto se utilizará una máquina virtual con el sistema operativo U
 
 ![](images/Maquina_instal7.png)
 
-5.  Se le pregunta al usuario cuáles son las particiones que se van a crear, y se presiona el botón continuar.
+5.  Se le informa al usuario cuáles son las particiones que se van a crear, y se presiona el botón continuar.
 
 ![](images/Maquina_instal8.png)
 
@@ -88,7 +88,7 @@ Ventajas
 
 -Escalabilidad: Es un sistema de archivos de 128 bits capaz de gestionar zettabytes (mil millones de terabytes) de datos.  
 
--Máxima integridad: Todo lo que hace dentro de ZFS utiliza una suma de comprobación para garantizar la integridad de los archivos. Además, mientras ZFS está ocupado comprobando silenciosamente la integridad de sus datos, realizará reparaciones automáticas en cualquier momento que pueda.
+-Máxima integridad: Todo lo que hace dentro de ZFS utiliza un checksum para garantizar la integridad de los archivos. Además, mientras ZFS está ocupado comprobando silenciosamente la integridad de sus datos, realizará reparaciones automáticas en cualquier momento que pueda.
 
 -Drive pooling: Los creadores de ZFS hacen una analogìa de este sistema de archivos con la memoria RAM.  Cuando necesitas más memoria en tu computadora, pones otro stick y ya está.  Del mismo modo, con ZFS, cuando se necesita más espacio en el disco duro, se coloca otro disco duro y listo.  No hay necesidad de gastar tiempo particionando, formateando, inicializando, o haciendo cualquier otra cosa en sus discos - cuando necesite un "pool" de almacenamiento más grande, simplemente añada discos.
 
@@ -101,7 +101,7 @@ La arquitectura de funcionamiento de ZFS se puede apreciar a continuación:
 A diferencia de los sistemas de ficheros tradicionales que residen encima de un sólo dispositivo subyacente y por lo tanto requieren un gestor de volúmenes separado, ZFS se apoya en espacios de almacenamiento virtuales (virtual storage pools). Los espacios se construyen a partir de uno o más dispositivos virtuales, o vdevs (la forma al que se referencia cualquier tipo de dispositivo de almacenamiento, ya sea local o remoto). Un pool puede ser de tipo simple (uno o más vdevs sin redundancia), mirror (dos o más vdevs en pares, en modalidad espejo), o RAID Z (tres o más vdevs con paridad).
 
 
-Siguiendo con la instalación, se configura LXD para su uso con el comando:
+Siguiendo con la instalación, se configura LXD para su uso con el comando.
 ```console
 sudo lxd init
 ```
@@ -249,7 +249,7 @@ lxc config set webServer1 limits.cpu 1
 ![](images/webserver2_cpu.png)
 
 ## Creación de contenedor con servicio de balanceo de carga
-Se requiere la creción de un contenedor, el cual tendrá como fin ser un balanceador de carga, designado a dirigir el tráfico entranto hacia alguno de los dos servidores web previamente creados. Se define el siguiente estándar de nombres y se procede a ejecutar el comando de creación de un contenedor con LXC.
+Se requiere la creción de un contenedor, el cual tendrá como fin ser un balanceador de carga, designado a dirigir el tráfico entrante hacia alguno de los dos servidores web previamente creados. Se define el siguiente estándar de nombres y se procede a ejecutar el comando de creación de un contenedor con LXC.
 
 - Balanceador de carga -> balanceadorCarga
 
@@ -530,8 +530,8 @@ En el cual se le pide al usuario si desea crear o eliminar un contenedor. Si des
 ![](images/pylxd3.png)  
 
 
-#### Preguntas ramdom
--¿Al reiniciar la máquina virtual en que estado quedan los contenedores?  
+
+### ¿Al reiniciar la máquina virtual en que estado quedan los contenedores?  
 A apagar la máquina se envía a todos los contenedores una señal de apagado a la que tienen 30 segundos para responder haciendo un apagado limpio del contenedor. Después de eso, si el contenedor sigue funcionando, será terminado forzadamente por LXD. Al arrancar, todos los contenedores que estaban funcionando en el momento en que se apagó el sistema se volverán a arrancar.  
 ![](images/reinicio_lxc.png)
 ![](images/reinicio_lxc2.png)
@@ -548,4 +548,5 @@ A apagar la máquina se envía a todos los contenedores una señal de apagado a 
 -https://discuss.linuxcontainers.org/t/host-os-shutdown-restart-graceful-shutdown-restart-of-lxd-containers/391  
 -https://www.joedog.org/siege-home/  
 -http://pylxd.readthedocs.io/en/latest/containers.html  
+-https://blog.simos.info/how-to-make-your-lxd-container-get-ip-addresses-from-your-lan/  
 
