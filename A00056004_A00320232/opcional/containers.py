@@ -10,7 +10,7 @@ if seleccion==1:
         print('Contenedor creado exitosamente')
 elif seleccion==2:
         id = raw_input("Nombre del contenedor que desea eliminar: ")
-        container = client.containers.get('my-container')
+        container = client.containers.get(id)
         container.delete()
         print("Contenedor borrado exitosamente")
 else:
