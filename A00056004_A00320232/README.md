@@ -474,10 +474,10 @@ A apagar la máquina se envía a todos los contenedores una señal de apagado a 
 
 ## Bibliografía
 
--https://www.howtogeek.com/175159/an-introduction-to-the-z-file-system-zfs-for-linux/
--https://docs.oracle.com/cd/E24842_01/html/820-2314/zfsover-2.html#scrolltoc
--https://wiki.illumos.org/download/attachments/1146951/zfs_last.pdf
--https://es.wikipedia.org/wiki/ZFS_(sistema_de_archivos)#Espacios_de_almacenamiento_(Storage_pools)
--https://discuss.linuxcontainers.org/t/host-os-shutdown-restart-graceful-shutdown-restart-of-lxd-containers/391
--https://www.joedog.org/siege-home/
+-https://www.howtogeek.com/175159/an-introduction-to-the-z-file-system-zfs-for-linux/  
+-https://docs.oracle.com/cd/E24842_01/html/820-2314/zfsover-2.html#scrolltoc  
+-https://wiki.illumos.org/download/attachments/1146951/zfs_last.pdf  
+-https://es.wikipedia.org/wiki/ZFS_(sistema_de_archivos)#Espacios_de_almacenamiento_(Storage_pools)  
+-https://discuss.linuxcontainers.org/t/host-os-shutdown-restart-graceful-shutdown-restart-of-lxd-containers/391  
+-https://www.joedog.org/siege-home/  
 
