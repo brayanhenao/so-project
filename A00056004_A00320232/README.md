@@ -430,7 +430,7 @@ sudo iptables -t nat -A PREROUTING -p tcp -m conntrack --ctstate NEW --dport 80 
 -Configure un adaptador nictype: macvlan
 Para realizar esta acción, se debe ingresar el siguiente comando.
 
-```consol
+```console
 sudo ip link add macvlanip link lxdbr0 type macvlan type bridge
 ```
 
@@ -466,6 +466,11 @@ else:
 #### Preguntas ramdom
 -¿Al reiniciar la máquina virtual en que estado quedan los contenedores?  
 A apagar la máquina se envía a todos los contenedores una señal de apagado a la que tienen 30 segundos para responder haciendo un apagado limpio del contenedor. Después de eso, si el contenedor sigue funcionando, será terminado forzadamente por LXD. Al arrancar, todos los contenedores que estaban funcionando en el momento en que se apagó el sistema se volverán a arrancar.  
+![](images/reinicio_lxc.png)
+![](images/reinicio_lxc2.png)
+![](images/reinicio_lxc3.png)
+![](images/reinicio_lxc4.png)
+
 
 ## Bibliografía
 
