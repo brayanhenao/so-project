@@ -440,27 +440,52 @@ Luego, con el comando ip a podemos comprobar que el adaptador fue creado.
 
 ### Creación de aplicacion por consola
 
-Se creó un script en python que permite la creación y eliminación de contenedores.
+Se creó un script en python que permite la creación y eliminación de contenedores mediante la consola.
 
 ```python
 from pylxd import Client
+import time
+
 client = Client()
 seleccion = input('Digite 1 para crear un contenedor o 2 para eliminarlo: ')
 
-if seleccion==1:
-        name = raw_input("Nombre para el contenedor: ")
-        imagen = raw_input("Imagen del contenedor ")
-        config = {'name': name, 'source': {'type': 'image', 'mode': 'pull', 'server': "https://cloud-images.ubuntu.com/daily", "protocol": "simplestreams", 'alias': imagen}, 'profiles': ['profilename']}
+if seleccion == '1':
+    name = input("Nombre para el contenedor: ")
+    imagen = input("Imagen del contenedor ( 'xenial/amd64', 'trusty/amd64', 'bionic/amd64', 'artful/amd64') :")
+    config = {'name': name,
+              'source': {'type': 'image', 'mode': 'pull', 'server': "https://cloud-images.ubuntu.com/daily",
+                         "protocol": "simplestreams", 'alias': imagen}, 'profiles': ['default']}
+    try:
         container = client.containers.create(config, wait=True)
-        print('Contenedor creado exitosamente')
-elif seleccion==2:
-        id = raw_input("Nombre del contenedor que desea eliminar: ")
+    except Exception:
+        print("Error en la imagen, nombre inválido.")
+        exit(1)
+    print('Contenedor creado exitosamente')
+    iniciar = input("¿Desea iniciarlo? Digite 1 para iniciarlo o 2 para no iniciarlo:")
+    if iniciar == '1':
+        container.start()
+
+elif seleccion == '2':
+    id = input("Nombre del contenedor que desea eliminar: ")
+    try:
         container = client.containers.get(id)
-        container.delete()
-        print("Contenedor borrado exitosamente")
+    except Exception:
+        print("No hay ningún contenedor con ese nombre.")
+        exit(1)
+    print("Deteniendo contenedor ......")
+    container.stop()
+    time.sleep(5)
+    container.delete()
+    print("Contenedor borrado exitosamente")
 else:
-        print("Entrada invalida")
+    print("Entrada invalida")
 ```
+
+En el cual se le pide al usuario si desea crear o eliminar un contenedor. Si desea crearlo, se le pedirá el nombre del contenedor y el nombre de la imagen a usar; si se desea eliminar un contenedor, se le pide el nombre del contenedor a eliminar.
+
+![](images/pylxd.png)
+![](images/pylxd2.png)
+![](images/pylxd3.png)  
 
 
 #### Preguntas ramdom
